@@ -9,21 +9,16 @@ using System.Windows.Forms;
 
 namespace WubEdit
 {
-    public partial class Form1 : Form
+    public partial class WubEditor : Form
     {
-        public Form1()
+        public WubEditor()
         {
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void buttonBrowse_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void toolStripContainer1_ContentPanel_Load(object sender, EventArgs e)
-        {
-
+            openFileDialog.ShowDialog();
         }
     }
 }
