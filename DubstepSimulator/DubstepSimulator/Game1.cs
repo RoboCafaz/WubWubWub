@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using DubstepSimulator.Graphics;
+using DubstepSimulator.Options;
 
 namespace DubstepSimulator
 {
@@ -33,7 +35,9 @@ namespace DubstepSimulator
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            GameOptions.Initialize();
+            GraphicsHandler.Initialize(ref graphics);
+            SpriteBatchHandler.Initialize();
 
             base.Initialize();
         }
@@ -47,7 +51,7 @@ namespace DubstepSimulator
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            SpriteBatchHandler.LoadContent(Content);
         }
 
         /// <summary>
@@ -69,8 +73,8 @@ namespace DubstepSimulator
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
-            // TODO: Add your update logic here
+            
+            SpriteBatchHandler.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -83,7 +87,7 @@ namespace DubstepSimulator
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            SpriteBatchHandler.Draw(spriteBatch,gameTime);
 
             base.Draw(gameTime);
         }
