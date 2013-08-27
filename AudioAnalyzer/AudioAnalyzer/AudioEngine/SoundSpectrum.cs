@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace AudioAnalyzer.AudioEngine
 {
-    class SoundSpectrum
+    public class SoundSpectrum
     {
         private int[] barHeights;
         private int[] peakHeights;

@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace AudioAnalyzer.AudioEngine
 {
-    class SoundPlayer
+    public class SoundPlayer
     {
         private IWavePlayer waveOutDevice;
         private WaveStream mainOutputStream;

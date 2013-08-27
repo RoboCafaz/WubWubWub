@@ -6,7 +6,7 @@ using NAudio.Dsp;
 
 namespace AudioAnalyzer.AudioEngine
 {
-    class SoundAggregator
+    public class SoundAggregator
     {
         private float volumeLeftMaxValue;
         private float volumeLeftMinValue;

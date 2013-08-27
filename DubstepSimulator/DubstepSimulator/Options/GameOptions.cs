@@ -8,6 +8,13 @@ namespace DubstepSimulator.Options
 {
     class GameOptions
     {
+        private static float wubDifference;
+        public static float WubDifference
+        {
+            get { return GameOptions.wubDifference; }
+            set { GameOptions.wubDifference = value; }
+        }
+
         private static Vector2 resolution;
         public static Vector2 Resolution
         {
@@ -34,6 +41,7 @@ namespace DubstepSimulator.Options
             Resolution = new Vector2(800, 600);
             SFXVolume = 1.0f;
             BGMVolume = 1.0f;
+            wubDifference = 0.001f;
         }
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using DubstepSimulator.Graphics;
 using DubstepSimulator.Options;
+using DubstepSimulator.Audio;
 
 namespace DubstepSimulator
 {
@@ -38,6 +39,7 @@ namespace DubstepSimulator
             GameOptions.Initialize();
             GraphicsHandler.Initialize(ref graphics);
             SpriteBatchHandler.Initialize();
+            AudioHandler.Initialize();
 
             base.Initialize();
         }
@@ -52,6 +54,7 @@ namespace DubstepSimulator
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             SpriteBatchHandler.LoadContent(Content);
+            AudioHandler.LoadContent();
         }
 
         /// <summary>
@@ -61,6 +64,7 @@ namespace DubstepSimulator
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+            AudioHandler.UnloadContent();
         }
 
         /// <summary>
@@ -75,6 +79,7 @@ namespace DubstepSimulator
                 this.Exit();
             
             SpriteBatchHandler.Update(gameTime);
+            AudioHandler.Update(gameTime);
 
             base.Update(gameTime);
         }

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using DubstepSimulator.Options;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
 
 namespace DubstepSimulator.Graphics
 {
@@ -13,6 +14,22 @@ namespace DubstepSimulator.Graphics
     {
         private static Matrix wubMatrix;
         private static Texture2D baseSprite;
+        private static float wubitude;
+
+        public static void increaseWubitude()
+        {
+            wubitude += GameOptions.WubDifference;
+        }
+
+        public static void decreaseWubitude()
+        {
+            wubitude -= GameOptions.WubDifference;
+        }
+
+        public static void reverseWubbing()
+        {
+            wubitude *= -1;
+        }
 
         public static void Initialize()
         {
@@ -26,8 +43,16 @@ namespace DubstepSimulator.Graphics
 
         public static void Update(GameTime gameTime)
         {
+            if (Keyboard.GetState(PlayerIndex.One).IsKeyDown(Keys.Right))
+            {
+                wubitude += GameOptions.WubDifference;
+            }
+            else if (Keyboard.GetState(PlayerIndex.One).IsKeyDown(Keys.Left))
+            {
+                wubitude -= GameOptions.WubDifference;
+            }
             wubMatrix *= Matrix.CreateTranslation(-(float)(GameOptions.Resolution.X / 2), -(float)(GameOptions.Resolution.Y / 2), 0);
-            wubMatrix *= Matrix.CreateFromYawPitchRoll(0, 0, 0.005f);
+            wubMatrix *= Matrix.CreateFromYawPitchRoll(0, 0, wubitude);
             wubMatrix *= Matrix.CreateTranslation((float)(GameOptions.Resolution.X / 2), (float)(GameOptions.Resolution.Y / 2), 0);
         }
 
