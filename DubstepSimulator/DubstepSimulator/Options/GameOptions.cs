@@ -8,6 +8,14 @@ namespace DubstepSimulator.Options
 {
     class GameOptions
     {
+
+        private static int trackSegments;
+        public static int TrackSegments
+        {
+            get { return GameOptions.trackSegments; }
+            set { GameOptions.trackSegments = value; }
+        }
+
         private static float wubDifference;
         public static float WubDifference
         {
@@ -38,10 +46,10 @@ namespace DubstepSimulator.Options
 
         public static void Initialize()
         {
-            Resolution = new Vector2(800, 600);
+            Resolution = new Vector2(1600, 600);
             SFXVolume = 1.0f;
             BGMVolume = 1.0f;
-            wubDifference = 0.001f;
+            wubDifference = 0.0001f;
         }
     }
 }

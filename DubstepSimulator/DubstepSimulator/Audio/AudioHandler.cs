@@ -12,8 +12,11 @@ namespace DubstepSimulator.Audio
     class AudioHandler
     {
         private static SoundSpectrum soundSpectrum = new SoundSpectrum(new Rectangle(0, 0, 640, 480));
-        private static SoundAggregator soundAggregator = new SoundAggregator(2048);
+        private static SoundAggregator soundAggregator = new SoundAggregator(1024);
         private static SoundPlayer soundPlayer = new SoundPlayer();
+        private static SoundPlayer SoundPlayer{ get{return soundPlayer;}}
+        private static Dictionary<int,List<float[]>> data;
+        public static Dictionary<int, List<float[]>> Data { get { return data; } }
 
         public static void Initialize()
         {
@@ -22,10 +25,11 @@ namespace DubstepSimulator.Audio
 
         public static void LoadContent()
         {
-            soundPlayer.LoadSong(@"C:\Users\bcafazzo\Music\MGR\10 vs. Sundowner - Red Sun (Maniac A.mp3");
+            soundPlayer.LoadSong(@"C:\Users\bcafazzo\Music\MGR\03 vs. Mistral - A Stranger I Remain.mp3");
             soundSpectrum.AudioEvent += (s, e) => AudioEvent(e);
+            data = soundPlayer.Analyze(4);
+            //soundSpectrum.RegisterSoundPlayer(soundPlayer);
             soundPlayer.PlaySong();
-            soundSpectrum.RegisterSoundPlayer(soundPlayer);
         }
 
         public static void Update(GameTime gameTime)

@@ -13,9 +13,9 @@ namespace AudioAnalyzer.AudioEngine
     {
         private int[] barHeights;
         private int[] peakHeights;
-        private float[] channelData = new float[2048];
+        private float[] channelData = new float[1024];
         private double bandWidth = 1.0;
-        private int maximumFrequencyIndex = 2047;
+        private int maximumFrequencyIndex = 1023;
         private int minimumFrequencyIndex;
         private int[] barIndexMax;
         private int[] barLogScaleIndexMax;
@@ -128,11 +128,14 @@ namespace AudioAnalyzer.AudioEngine
 
         public void Update(GameTime gameTime)
         {
-            interval++;
-            if (interval >= defaultUpdateInterval && soundPlayer.IsPlaying && soundPlayer.GetFFTData(channelData))
+            if (soundPlayer != null && soundPlayer.IsPlaying)
             {
-                NewSpectrumUpdate();
-                interval = 0;
+                interval++;
+                if (interval >= defaultUpdateInterval && soundPlayer.GetFFTData(channelData))
+                {
+                    NewSpectrumUpdate();
+                    interval = 0;
+                }
             }
         }
 
@@ -269,11 +272,11 @@ namespace AudioAnalyzer.AudioEngine
             {
                 return;
             }
-            MaximumFrequency = 2047;
+            MaximumFrequency = 1023;
 
             barWidth = (int)System.Math.Max((double)(canvas.Width - (barSpacing * barCount + 1)) / (double)barCount, 1);
-            maximumFrequencyIndex = System.Math.Min(soundPlayer.GetFFTFrequencyIndex(MaximumFrequency) + 1, 2047);
-            minimumFrequencyIndex = System.Math.Min(soundPlayer.GetFFTFrequencyIndex(MinimumFrequency), 2047);
+            maximumFrequencyIndex = System.Math.Min(soundPlayer.GetFFTFrequencyIndex(MaximumFrequency) + 1, 1023);
+            minimumFrequencyIndex = System.Math.Min(soundPlayer.GetFFTFrequencyIndex(MinimumFrequency), 1023);
             bandWidth = System.Math.Max(((double)(maximumFrequencyIndex - minimumFrequencyIndex)) / canvas.Width, 1.0);
 
             int actualBarCount;
@@ -337,7 +340,7 @@ namespace AudioAnalyzer.AudioEngine
             foreach (Rectangle r in dbBarShapes)
             {
                 Rectangle repos = new Rectangle(r.X, canvas.Y + canvas.Height - r.Height, (int)((double)r.Width / realDataTypes), r.Height);
-                spriteBatch.Draw(Game1.pixel,repos,Color.LimeGreen);
+                spriteBatch.Draw(Game1.pixel, repos, Color.LimeGreen);
             }
             foreach (Rectangle r in dbPeakShapes)
             {

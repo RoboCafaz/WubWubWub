@@ -8,6 +8,7 @@ using NAudio.Wave.SampleProviders;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using System.Windows.Forms;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace AudioAnalyzer.AudioEngine
 {
@@ -19,7 +20,7 @@ namespace AudioAnalyzer.AudioEngine
         private NotifyingSampleProvider sampleProvider;
         private WaveStream readerStream;
         private Boolean isPlaying = false;
-        private int fftDataSize = 2048;
+        private int fftDataSize = 1024;
         public List<Complex[]> fftSamples;
 
         private SoundAggregator aggregator;
@@ -90,6 +91,60 @@ namespace AudioAnalyzer.AudioEngine
             waveOutDevice.Play();
             waveOutDevice.Volume = 100;
             isPlaying = true;
+        }
+
+
+        public Dictionary<int, List<float[]>> Analyze(int subdivisions)
+        {
+            int trackSize = subdivisions;
+            CreateInputStream(fileName);
+            Dictionary<int, List<float[]>> sampleData = new Dictionary<int, List<float[]>>();
+
+            for (int i = 0; i < trackSize; i++)
+            {
+                sampleData.Add(i, new List<float[]>());
+            }
+
+            int samplesPerPixel = 128;
+            int bytesPerSample = (sampleProvider.WaveFormat.BitsPerSample / 8) * sampleProvider.WaveFormat.Channels;
+
+            if (sampleProvider != null)
+            {
+                int bytesRead;
+                float[] waveData = new float[samplesPerPixel * bytesPerSample];
+
+                Console.Out.WriteLine("Starting read.");
+                do
+                {
+
+                    bytesRead = sampleProvider.Read(waveData, 0, samplesPerPixel * bytesPerSample);
+
+                    float[] mins = new float[trackSize];
+                    float[] maxs = new float[trackSize];
+
+                    int step = bytesRead / trackSize;
+
+                    for (int i = 0; i < bytesRead; i += 2)
+                    {
+                        float sample = waveData[i];
+                        int range = (int)Math.Floor((double)(i / step));
+                        if (mins[range] < sample) { mins[range] = sample; }
+                        if (maxs[range] > sample) { maxs[range] = sample; }
+                    }
+
+                    for (int i = 0; i < trackSize; i++)
+                    {
+                        List<float[]> value;
+                        if (sampleData.TryGetValue(i, out value))
+                        {
+                            value.Add(new float[] { mins[i], maxs[i] });
+                        }
+                    }
+
+                } while (bytesRead > 0);
+                Console.Out.WriteLine("Finished read.");
+            }
+            return sampleData;
         }
 
         /// <summary>

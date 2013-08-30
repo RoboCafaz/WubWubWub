@@ -21,7 +21,7 @@ namespace AudioAnalyzer
 		SpriteBatch spriteBatch;
 		
 		SoundSpectrum soundSpectrum = new SoundSpectrum(new Rectangle(0,0,640,480));
-		SoundAggregator soundAggregator = new SoundAggregator(2048);
+        SoundAggregator soundAggregator = new SoundAggregator(1024);
 		SoundPlayer soundPlayer = new SoundPlayer();
         EventVisuals eventVisuals = new EventVisuals();
 
